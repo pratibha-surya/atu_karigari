@@ -6,7 +6,7 @@ import { useAuth } from '../../Pages/context/AuthContext';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, logoutUser } = useAuth(); // ✅ FIXED HERE
+  const { user, logoutUser } = useAuth(); 
 
   const navLinks = [
     { label: 'HANDLOOM', href: '/' },
@@ -55,7 +55,8 @@ const Navbar = () => {
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm pointer-events-none" />
           </div>
 
-          {/* ✅ LOGIN / LOGOUT BUTTON */}
+          
+          
           {!user ? (
             <Link
               to="/login"
@@ -112,7 +113,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={() => {
-                      logoutUser(); // ✅ FIXED
+                      logoutUser(); 
                       setMenuOpen(false);
                     }}
                     className="inline-block px-4 py-2 border border-green-600 text-green-600 rounded hover:bg-green-600 hover:text-white transition"
