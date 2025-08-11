@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';  
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import Footer from '../components/layout/Footer';
@@ -9,11 +9,10 @@ import ShopByFabric from '../Pages/affordable/ShopByFabric';
 import ShopByTrend from '../Pages/affordable/ShopByTrend';
 import Testimonials from '../Pages/affordable/Testimonials';
 import CardGrid from '../Pages/affordable/AtulyaKarigariGrid';
-import { useAuth } from '../Pages/context/AuthContext';
-
+import  AuthContext  from '../Pages/context/AuthContext';  
 
 const Home = () => {
-  const { user } = useAuth(); 
+  const { user } = useContext(AuthContext);  
 
   return (
     <>

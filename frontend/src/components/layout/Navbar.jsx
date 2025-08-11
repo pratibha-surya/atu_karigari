@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { CiMenuFries } from "react-icons/ci";
+import React, { useState, useContext } from 'react';  
+import { CiMenuFries } from 'react-icons/ci';
 import { FaUser, FaHeart, FaShoppingCart, FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../Pages/context/AuthContext';
+import  AuthContext  from '../../Pages/context/AuthContext';  
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, logoutUser } = useAuth(); 
+  const { user, logoutUser } = useContext(AuthContext);  
 
   const navLinks = [
     { label: 'HANDLOOM', href: '/' },
@@ -18,6 +18,7 @@ const Navbar = () => {
 
   return (
     <>
+     
       <h3 className="w-full text-white text-center text-sm font-semibold hidden sm:block"
         style={{
           height: '31px',
@@ -27,7 +28,9 @@ const Navbar = () => {
         Step into Style and Discover your Signature Look
       </h3>
 
+      
       <nav className="bg-white shadow-md py-4 px-4 sm:px-6 md:px-8 flex justify-between items-center relative font-sans flex-wrap">
+       
         <div className="flex flex-col sm:flex-row sm:items-center text-lg sm:text-2xl font-semibold text-[#7F0A18] leading-5 sm:leading-none">
           <span>Atulya</span>
           <span className="sm:ml-1 border border-yellow-400 bg-yellow-400 text-[#7F0A18] px-2 py-1 rounded">
@@ -35,6 +38,7 @@ const Navbar = () => {
           </span>
         </div>
 
+       
         <ul className="hidden md:flex space-x-6 text-sm font-medium text-gray-700">
           {navLinks.map((link) => (
             <li key={link.label}>
@@ -45,7 +49,9 @@ const Navbar = () => {
           ))}
         </ul>
 
+        
         <div className="hidden md:flex items-center space-x-4">
+        
           <div className="relative hidden sm:block">
             <input
               type="text"
@@ -55,7 +61,6 @@ const Navbar = () => {
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm pointer-events-none" />
           </div>
 
-          
           
           {!user ? (
             <Link
@@ -73,20 +78,31 @@ const Navbar = () => {
             </button>
           )}
 
-          <FaUser className="text-gray-600 hover:text-orange-600 cursor-pointer" size={18} />
-          <FaHeart className="text-gray-600 hover:text-orange-600 cursor-pointer" size={18} />
-          <FaShoppingCart className="text-gray-600 hover:text-orange-600 cursor-pointer" size={18} />
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOBOT-Mbazf_ImuPVvxar-BBPsu_GMtvX5dg&s"
-            alt="shopping bag"
-            className="w-6 h-6 cursor-pointer"
-          />
+         
+          <div className="flex space-x-4">
+            <Link to="/profile">
+              <FaUser className="text-gray-600 hover:text-orange-600 cursor-pointer" size={18} />
+            </Link>
+            <Link to="/wishlist">
+              <FaHeart className="text-gray-600 hover:text-orange-600 cursor-pointer" size={18} />
+            </Link>
+            <Link to="/cart">
+              <FaShoppingCart className="text-gray-600 hover:text-orange-600 cursor-pointer" size={18} />
+            </Link>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOBOT-Mbazf_ImuPVvxar-BBPsu_GMtvX5dg&s"
+              alt="shopping bag"
+              className="w-6 h-6 cursor-pointer"
+            />
+          </div>
         </div>
 
+       
         <div className="md:hidden cursor-pointer" onClick={() => setMenuOpen(!menuOpen)}>
           <CiMenuFries size={25} />
         </div>
 
+       
         {menuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg z-10">
             <ul className="flex flex-col text-center space-y-3 py-4">
@@ -113,7 +129,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={() => {
-                      logoutUser(); 
+                      logoutUser();
                       setMenuOpen(false);
                     }}
                     className="inline-block px-4 py-2 border border-green-600 text-green-600 rounded hover:bg-green-600 hover:text-white transition"

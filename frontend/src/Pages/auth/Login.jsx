@@ -4,7 +4,9 @@ import { z } from 'zod';
 import { login } from '../../api/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useAuth } from '../context/AuthContext';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
+
 
 
 const schema = z.object({
@@ -14,7 +16,7 @@ const schema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
-  const { loginUser } = useAuth(); 
+  const { loginUser } = useContext(AuthContext); 
   const {
     register,
     handleSubmit,

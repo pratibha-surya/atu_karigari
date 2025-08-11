@@ -4,7 +4,9 @@ import { z } from 'zod';
 import { signup } from '../../api/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useAuth } from '../context/AuthContext';
+import AuthContext from '../context/AuthContext';
+import { useContext } from 'react';
+
 
 const schema = z.object({
   email: z.string().email({ message: 'Invalid email' }),
@@ -13,7 +15,7 @@ const schema = z.object({
 
 export default function Signup() {
   const navigate = useNavigate();
-  const { loginUser } = useAuth();
+  const { loginUser } = useContext(AuthContext);
 
   const {
     register,
