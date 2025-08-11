@@ -1,7 +1,9 @@
+
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.model.js';
 import { signupSchema, loginSchema } from '../validators/authValidation.js';
+import ApiError from '../utils/ApiError.js';
 
 const generateTokens = (userId) => {
   const accessToken = jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
@@ -9,15 +11,15 @@ const generateTokens = (userId) => {
   return { accessToken, refreshToken };
 };
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const { error } = signupSchema.validate(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
+  if (error) return next(new ApiError(error.details[0].message, 400));
 
   const { email, password } = req.body;
 
   try {
     const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ message: 'Email already registered' });
+    if (exists) return next(new ApiError('Email already registered', 400));
 
     const hashed = await bcrypt.hash(password, 10);
     const newUser = await User.create({ email, password: hashed });
@@ -37,22 +39,22 @@ export const signup = async (req, res) => {
         accessToken: tokens.accessToken
       });
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   const { error } = loginSchema.validate(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
+  if (error) return next(new ApiError(error.details[0].message, 400));
 
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user) return next(new ApiError('Invalid credentials', 400));
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) return next(new ApiError('Invalid credentials', 400));
 
     const tokens = generateTokens(user._id);
 
@@ -68,9 +70,10 @@ export const login = async (req, res) => {
         accessToken: tokens.accessToken
       });
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
+
 export const logout = (req, res) => {
   res.clearCookie('refreshToken');
   res.json({ message: 'Logged out successfully' });
