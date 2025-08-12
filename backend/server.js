@@ -23,7 +23,7 @@ const app = express();
 app.use(helmet()); 
 
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true })); 
+app.use(cors({ origin: 'https://atu-karigari.onrender.com', credentials: true })); 
 
 
 app.use(rateLimit({
