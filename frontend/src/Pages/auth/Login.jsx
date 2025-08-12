@@ -30,7 +30,7 @@ export default function Login() {
 
       loginUser(accessToken); 
       toast.success('Login successful');
-      navigate('/');
+      navigate('/profile');
     } catch (err) {
       const message = err.response?.data?.message || 'Login failed';
       toast.error(message);
