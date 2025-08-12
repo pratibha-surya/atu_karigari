@@ -1,5 +1,3 @@
-
-
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -20,25 +18,53 @@ connectDB();
 
 const app = express();
 
-// ✅ Configure Helmet with custom CSP to fix login blocking
+// ✅ Helmet with CSP and referrer fix
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", 'https://atu-karigari.onrender.com'],
-        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://atu-karigari.onrender.com',
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+        ],
         fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-        imgSrc: ["'self'", 'data:', 'https://atu-karigari.onrender.com'],
-        connectSrc: ["'self'", 'https://atu-karigari.onrender.com'],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'https://atu-karigari.onrender.com',
+        ],
+        connectSrc: [
+          "'self'",
+          'https://atu-karigari.onrender.com',
+          'http://localhost:5000', // ✅ allow local dev connections
+        ],
         frameSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'", 'https://atu-karigari.onrender.com'],
+        // ✅ Allow all referrers (fixes referrer policy block)
+        referrer: ['*'],
       },
     },
     crossOriginEmbedderPolicy: false,
   })
 );
 
-// ✅ Enable CORS to allow frontend communication
+// ✅ Optionally also explicitly set referrer policy header
+app.use(
+  helmet.referrerPolicy({
+    policy: 'strict-origin-when-cross-origin',
+  })
+);
+
+// ✅ Enable CORS for frontend
 app.use(cors({
   origin: 'https://atu-karigari.onrender.com',
   credentials: true,
