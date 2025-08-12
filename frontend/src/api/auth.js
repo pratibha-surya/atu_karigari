@@ -1,46 +1,53 @@
 import axios from 'axios';
 
-// Use VITE_API_URL from .env (e.g., https://your-backend.onrender.com/api/v1/auth)
+// Create an Axios instance
 const API = axios.create({
-  baseURL:  'http://localhost:5000/api/v1/auth',
-  withCredentials: true, // Required for sending secure httpOnly cookies
+  baseURL: 'https://atu-karigari.onrender.com/api/v1/auth',
+  withCredentials: true, // Send cookies (refresh token)
 });
 
-// Request Interceptor
+// Request Interceptor: Attach access token if present
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor
+// Response Interceptor: Handle token refresh logic
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle expired access token
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Check for 401 Unauthorized and ensure it's not already retried
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/refresh')
+    ) {
       originalRequest._retry = true;
 
       try {
-        const res = await API.post('/refresh'); // refresh token is sent via httpOnly cookie
-        const { accessToken } = res.data;
+        // Attempt to refresh the token
+        const { data } = await API.post('/refresh'); // sent with HttpOnly cookie
+        const newAccessToken = data.accessToken;
 
-        localStorage.setItem('accessToken', accessToken);
-
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        // Store new token and retry original request
+        localStorage.setItem('accessToken', newAccessToken);
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return API(originalRequest);
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
 
+        // Clear stored token and redirect to login
         localStorage.removeItem('accessToken');
         window.location.href = '/login';
+        return Promise.reject(refreshError);
       }
     }
 
@@ -48,11 +55,11 @@ API.interceptors.response.use(
   }
 );
 
-// Auth endpoints
+// Auth endpoint wrappers
 export const signup = (data) => API.post('/signup', data);
 export const login = (data) => API.post('/login', data);
 export const logout = () => API.post('/logout');
 export const getProtected = () => API.get('/me');
-export const refreshToken = () => API.post('/refresh'); // not used directly; handled by interceptor
+export const refreshToken = () => API.post('/refresh'); // handled automatically
 
 export default API;
