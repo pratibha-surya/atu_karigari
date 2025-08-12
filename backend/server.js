@@ -1,3 +1,5 @@
+
+
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -11,61 +13,71 @@ import authRoutes from './routes/auth.route.js';
 import { connectDB } from './config/db.js';
 import errorHandler from './middleware/errorHandler.js';
 
-
 dotenv.config();
 
-
+// Connect to MongoDB
 connectDB();
 
 const app = express();
 
+// ✅ Configure Helmet with custom CSP to fix login blocking
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", 'https://atu-karigari.onrender.com'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        imgSrc: ["'self'", 'data:', 'https://atu-karigari.onrender.com'],
+        connectSrc: ["'self'", 'https://atu-karigari.onrender.com'],
+        frameSrc: ["'self'"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
-app.use(helmet()); 
-
-
-app.use(cors({ origin: 'https://atu-karigari.onrender.com', credentials: true })); 
-
-
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100,
-  message: 'Too many requests from this IP, please try again later.'
+// ✅ Enable CORS to allow frontend communication
+app.use(cors({
+  origin: 'https://atu-karigari.onrender.com',
+  credentials: true,
 }));
 
+// ✅ Apply rate limiting
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: 'Too many requests from this IP, please try again later.',
+}));
 
+// ✅ Logging and parsers
 app.use(morgan('dev'));
+app.use(express.json());
+app.use(cookieParser());
 
-
-app.use(express.json()); 
-
-
-app.use(cookieParser()); 
-
-
+// ✅ Setup __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
+// ✅ Serve uploaded files
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// ✅ Routes
+app.use('/api/v1/auth', authRoutes);
 
-app.use('/api/v1/auth', authRoutes); 
-
-
-app.use(errorHandler);
-
-
+// ✅ Serve frontend build
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
+// ✅ Error handling middleware
+app.use(errorHandler);
 
+// ✅ Start the server
 const PORT = process.env.PORT || 5000;
-
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
