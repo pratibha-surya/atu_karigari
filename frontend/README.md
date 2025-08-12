@@ -3,18 +3,11 @@
 
 ---
 
-## Table of Contents
 
 
-- 
-- [Setup & Installation](#setup--installation)
-- [Environment Variables](#environment-variables)
-- [Running the Project](#running-the-project)
-- [Project Structure](#project-structure)
-- [Security Features](#security-features)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
+
+
+
 
 ---
 
@@ -90,5 +83,8 @@ Frontend validation with Zod
 ### Clone the repo
 
 ```bash
-git clone <>
-cd your-repo-folder
+git clone https://github.com/pratibha-surya/atu_karigari.git
+cd  assig
+cd frontend
+cd backend
+
