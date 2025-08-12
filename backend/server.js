@@ -17,24 +17,35 @@ dotenv.config();
 
 connectDB();
 
-
 const app = express();
 
 
 app.use(helmet()); 
-app.use(cors()); 
+
+
+app.use(cors({ origin: 'http://localhost:5173', credentials: true })); 
+
+
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 100, 
+  max: 100,
   message: 'Too many requests from this IP, please try again later.'
 }));
-app.use(morgan('dev')); 
+
+
+app.use(morgan('dev'));
+
+
 app.use(express.json()); 
+
+
 app.use(cookieParser()); 
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
@@ -53,6 +64,8 @@ app.get("/", (req, res) => {
 
 
 const PORT = process.env.PORT || 5000;
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

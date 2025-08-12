@@ -1,12 +1,94 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Full-Stack React + Express Authentication Boilerplate
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Table of Contents
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 
+- [Setup & Installation](#setup--installation)
+- [Environment Variables](#environment-variables)
+- [Running the Project](#running-the-project)
+- [Project Structure](#project-structure)
+- [Security Features](#security-features)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Project Overview
+
+This is a full-stack authentication system built with React on the frontend and Express on the backend.  
+It uses JWTs for authentication with secure refresh token rotation, password hashing, validation, and security middleware.
+
+---
+
+## Technologies
+
+### Backend
+
+- Node.js, Express 5.x  
+- MongoDB with Mongoose  
+- JWT (jsonwebtoken)  
+- bcryptjs for password hashing  
+- Joi for backend input validation  
+- Helmet, express-rate-limit, CORS for security  
+- Morgan for HTTP logging  
+- Nodemon for development
+
+### Frontend
+
+- React 19.x with Vite  
+- React Router DOM v7  
+- Axios for HTTP requests  
+- React Hook Form + Zod for form validation  
+- Tailwind CSS for styling  
+- React Hot Toast & React Toastify for notifications
+
+---
+
+## Setup & Installation
+Backend step
+cd backend
+npm install
+frontend step
+cd frontend
+npm install
+## Backend
+npm run dev
+## Frontend
+npm run dev
+ ## Security Features
+Password hashing with bcryptjs
+
+JWT authentication with access & refresh tokens
+
+HTTP-only, secure, SameSite cookies for refresh tokens
+
+Helmet for setting secure HTTP headers
+
+Rate limiting to prevent brute force attacks
+
+Strict CORS allowing only frontend origin
+
+Backend validation with Joi
+
+Frontend validation with Zod
+
+
+
+
+
+
+
+
+
+
+
+### Clone the repo
+
+```bash
+git clone <>
+cd your-repo-folder
