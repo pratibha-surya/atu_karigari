@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-// ✅ Dynamically set baseURL based on environment
+
 const API = axios.create({
   baseURL: import.meta.env.DEV
-    ? '/api' // go through Vite proxy during dev
-    : 'https://atu-karigari.onrender.com/api/v1/auth', // prod/live
+    ? '/api' 
+    : 'https://atu-karigari.onrender.com/api/v1/auth',
   withCredentials: true,
 });
 
-// ✅ Add token to every request if available
+
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -20,7 +20,7 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ✅ Automatically refresh token on 401
+
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -52,7 +52,7 @@ API.interceptors.response.use(
   }
 );
 
-// ✅ Export reusable API methods
+
 export const signup = (data) => API.post('/signup', data);
 export const login = (data) => API.post('/login', data);
 export const logout = () => API.post('/logout');

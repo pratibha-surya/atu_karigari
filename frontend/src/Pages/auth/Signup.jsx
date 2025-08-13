@@ -34,12 +34,12 @@ export default function Signup() {
         throw new Error('Access token not received');
       }
 
-      // Login the user
+      
       loginUser(accessToken);
       toast.success('Signup successful! You are now logged in.');
 
-      // Redirect to the login page after successful signup
-      navigate('/login');  // Navigating directly to the login page
+      
+      navigate('/login');  
 
     } catch (err) {
       console.error('Signup error:', err.response || err);
@@ -55,7 +55,7 @@ export default function Signup() {
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 rounded shadow-md w-full max-w-sm relative">
         <h2 className="text-2xl font-semibold mb-4 text-center">Signup</h2>
 
-        {/* Email Input */}
+        
         <div className="mb-4">
           <input
             type="email"
@@ -67,7 +67,7 @@ export default function Signup() {
           {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
         </div>
 
-        {/* Password Input */}
+        
         <div className="mb-4 relative">
           <input
             type={passwordVisible ? 'text' : 'password'}
@@ -86,7 +86,7 @@ export default function Signup() {
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
         </div>
 
-        {/* Submit Button */}
+        
         <button
           type="submit"
           disabled={isLoading}
@@ -95,7 +95,7 @@ export default function Signup() {
           {isLoading ? 'Signing up...' : 'Signup'}
         </button>
 
-        {/* Link to Login Page */}
+       
         <p className="mt-4 text-center text-sm">
           Already have an account?{' '}
           <Link to="/login" className="text-blue-600 hover:underline">
