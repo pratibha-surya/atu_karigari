@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: '/api', // Always use '/api', handled by Vite proxy in dev and reverse proxy in prod
+  baseURL: '/api', 
   withCredentials: true,
 });
 

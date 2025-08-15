@@ -33,9 +33,9 @@ export default function Login() {
     const accessToken = res?.data?.accessToken;
 
     if (accessToken) {
-      await loginUser(accessToken); // ✅ wait until user is set
+      await loginUser(accessToken);
       toast.success('Login successful');
-      navigate('/profile'); // ✅ only navigate when ready
+      navigate('/profile'); 
     } else {
       toast.error('Login failed: No token received');
     }
