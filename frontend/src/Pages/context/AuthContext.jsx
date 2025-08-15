@@ -1,10 +1,9 @@
-// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import {
   refreshToken as refreshAccessToken,
   logout as apiLogout,
   getProtected,
-} from '../../api/auth'; // Adjust path as needed
+} from '../../api/auth';
 
 const AuthContext = createContext();
 
@@ -24,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (accessToken) => {
     localStorage.setItem('accessToken', accessToken);
-    await fetchUserProfile(); // call backend to get actual user data
+    await fetchUserProfile();
   };
 
   const logoutUser = async () => {
@@ -39,11 +38,14 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async () => {
     try {
-      const { data } = await getProtected(); // /me
-      setUser(data.user); // backend must return { user: {...} }
+      const res = await getProtected(); // Calls /me endpoint
+      const { user } = res.data;
+
+      // console.log('Fetched user profile:', user);
+      setUser(user);
     } catch (err) {
       console.error('Fetching user profile failed:', err);
-      logoutUser();
+      // logoutUser();
     }
   };
 
@@ -59,7 +61,7 @@ export const AuthProvider = ({ children }) => {
         await fetchUserProfile();
       } catch (err) {
         console.error('Auto-refresh failed:', err);
-        logoutUser();
+        // logoutUser();
       }
     }
 

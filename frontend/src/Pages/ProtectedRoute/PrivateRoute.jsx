@@ -10,7 +10,7 @@ export default function PrivateRoute({ children }) {
   if (loading) {
     return <div>Loading...</div>;  
   }
-
+// console.log("user in protected",user)
   
   return user ? children : <Navigate to="/login" />;
 }

@@ -1,13 +1,9 @@
 import axios from 'axios';
 
-
 const API = axios.create({
-  baseURL: import.meta.env.DEV
-    ? '/api' 
-    : 'https://atu-karigari.onrender.com/api/v1/auth',
+  baseURL: '/api', // Always use '/api', handled by Vite proxy in dev and reverse proxy in prod
   withCredentials: true,
 });
-
 
 API.interceptors.request.use(
   (config) => {
@@ -19,7 +15,6 @@ API.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
 
 API.interceptors.response.use(
   (response) => response,
@@ -52,7 +47,7 @@ API.interceptors.response.use(
   }
 );
 
-
+// API endpoints
 export const signup = (data) => API.post('/signup', data);
 export const login = (data) => API.post('/login', data);
 export const logout = () => API.post('/logout');

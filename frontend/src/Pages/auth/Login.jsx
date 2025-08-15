@@ -28,27 +28,26 @@ export default function Login() {
 
   
   const onSubmit = async ({ email, password }) => {
-    try {
-      
-      const res = await login({ email, password });
-      const accessToken = res?.data?.accessToken;
+  try {
+    const res = await login({ email, password });
+    const accessToken = res?.data?.accessToken;
 
-      
-      if (accessToken) {
-        loginUser(accessToken); 
-        toast.success('Login successful');
-        navigate('/profile'); 
-      } else {
-        toast.error('Login failed: No token received');
-      }
-    } catch (err) {
-      
-      const message =
-        err?.response?.data?.message ||
-        'An error occurred while logging in. Please try again.';
-      toast.error(message); 
+    if (accessToken) {
+      await loginUser(accessToken); // ✅ wait until user is set
+      toast.success('Login successful');
+      navigate('/profile'); // ✅ only navigate when ready
+    } else {
+      toast.error('Login failed: No token received');
     }
-  };
+  } catch (err) {
+    const message =
+      err?.response?.data?.message ||
+      err?.response?.data?.error ||
+      'An error occurred while logging in. Please try again.';
+    toast.error(message);
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
