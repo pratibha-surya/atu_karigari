@@ -13,7 +13,7 @@ export default defineConfig({
 
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api/v1/auth'),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

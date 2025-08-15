@@ -48,10 +48,10 @@ API.interceptors.response.use(
 );
 
 // API endpoints
-export const signup = (data) => API.post('/signup', data);
-export const login = (data) => API.post('/login', data);
-export const logout = () => API.post('/logout');
-export const getProtected = () => API.get('/me');
-export const refreshToken = () => API.post('/refresh');
+export const signup = (data) => API.post('/v1/auth/signup', data);
+export const login = (data) => API.post('/v1/auth/login', data);
+export const logout = () => API.post('/v1/auth/logout');
+export const getProtected = () => API.get('/v1/auth/me');
+export const refreshToken = () => API.post('/v1/auth/refresh');
 
 export default API;
