@@ -1,7 +1,10 @@
 // src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import jwt_decode from 'jwt-decode';
-import { refreshToken as refreshAccessToken, logout as apiLogout } from '../../api/auth'; // Adjust path as needed
+import {
+  refreshToken as refreshAccessToken,
+  logout as apiLogout,
+  getProtected,
+} from '../../api/auth'; // Adjust path as needed
 
 const AuthContext = createContext();
 
@@ -11,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const isTokenExpired = (token) => {
     try {
-      const decoded = jwt_decode(token);
+      const decoded = JSON.parse(atob(token.split('.')[1]));
       const expiry = decoded.exp * 1000;
       return Date.now() > expiry;
     } catch (err) {
@@ -19,19 +22,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginUser = (accessToken) => {
+  const loginUser = async (accessToken) => {
     localStorage.setItem('accessToken', accessToken);
-    const decoded = jwt_decode(accessToken);
-    setUser(decoded);
+    await fetchUserProfile(); // call backend to get actual user data
   };
 
   const logoutUser = async () => {
     localStorage.removeItem('accessToken');
     setUser(null);
     try {
-      await apiLogout(); // Clear refresh token cookie on backend
+      await apiLogout();
     } catch (err) {
       console.error('Logout failed:', err);
+    }
+  };
+
+  const fetchUserProfile = async () => {
+    try {
+      const { data } = await getProtected(); // /me
+      setUser(data.user); // backend must return { user: {...} }
+    } catch (err) {
+      console.error('Fetching user profile failed:', err);
+      logoutUser();
     }
   };
 
@@ -39,16 +51,18 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('accessToken');
 
     if (token && !isTokenExpired(token)) {
-      loginUser(token);
+      await fetchUserProfile();
     } else if (token) {
       try {
         const { data } = await refreshAccessToken();
-        loginUser(data.accessToken);
+        localStorage.setItem('accessToken', data.accessToken);
+        await fetchUserProfile();
       } catch (err) {
         console.error('Auto-refresh failed:', err);
         logoutUser();
       }
     }
+
     setLoading(false);
   };
 
