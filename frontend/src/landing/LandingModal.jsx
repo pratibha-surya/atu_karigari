@@ -19,7 +19,8 @@ const LandingModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50  bg-opacity-50 flex justify-center pt-10 md:pt-20 lg:pt-28 overflow-y-auto">
+    <div className="fixed inset-0 z-50  bg-opacity-50 flex justify-center pt-10 md:pt-20 lg:pt-28 overflow-y-auto backdrop-blur-sm
+">
       <div className="relative w-[95%] max-w-6xl h-[85vh] md:h-[75vh]
             rounded-[32px] 
             border-[15px] 
