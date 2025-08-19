@@ -11,8 +11,7 @@ export default defineConfig({
         target: 'https://atu-karigari.onrender.com',
         changeOrigin: true,
         secure: true,
-        // Remove the rewrite line so /api stays in path
-        // rewrite: (path) => path.replace(/^\/api/, ''), // ❌ Remove this
+       
       },
     },
   },

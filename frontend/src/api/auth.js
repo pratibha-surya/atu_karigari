@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const baseURL = import.meta.env.DEV
-  ? '/api' // Use Vite proxy in development
-  : 'https://atu-karigari.onrender.com/api'; // Use full backend URL in production
+  ? '/api' 
+  : 'https://atu-karigari.onrender.com/api'; 
 
 const API = axios.create({
   baseURL,
