@@ -13,12 +13,9 @@ import { connectDB } from './config/db.js';
 import errorHandler from './middleware/errorHandler.js';
 
 dotenv.config();
-
-
 connectDB();
 
 const app = express();
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +32,6 @@ const allowedOrigins = [
   'http://localhost:5173',
 ];
 
-
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -51,14 +47,22 @@ app.use(
 );
 
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
-  message: 'Too many requests from this IP, please try again later.',
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
 });
-app.use(limiter);
+app.use(globalLimiter);
+
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, 
+  message: 'Too many auth requests. Please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 
 app.use(morgan('dev'));
@@ -69,11 +73,10 @@ app.use(cookieParser());
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/auth', authLimiter, authRoutes);
 
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
