@@ -1,90 +1,75 @@
-
-# Full-Stack React + Express Authentication Boilerplate
-
----
-
-
-
-
-
-
+#  Full-Stack React + Express Authentication Boilerplate
 
 ---
 
-## Project Overview
+## 
+Project Overview
 
-This is a full-stack authentication system built with React on the frontend and Express on the backend.  
-It uses JWTs for authentication with secure refresh token rotation, password hashing, validation, and security middleware.
+This is a full-stack authentication system built with **React (frontend)** and **Express (backend)**.  
+It uses **JWTs with refresh token rotation**, **password hashing**, **form validation**, and multiple **security best practices** on both ends.
 
 ---
 
-## Technologies
+##  Technologies Used
 
-### Backend
+###  Backend
 
-- Node.js, Express 5.x  
-- MongoDB with Mongoose  
-- JWT (jsonwebtoken)  
-- bcryptjs for password hashing  
-- Joi for backend input validation  
-- Helmet, express-rate-limit, CORS for security  
-- Morgan for HTTP logging  
-- Nodemon for development
+- Node.js & Express 5.x  
+- MongoDB + Mongoose  
+- JSON Web Tokens (JWT)  
+- bcryptjs – password hashing  
+- Joi – request body validation  
+- Helmet – secure HTTP headers  
+- express-rate-limit – rate limiting  
+- CORS – secure cross-origin access  
+- Morgan – request logging  
+- Nodemon – development server
 
-### Frontend
+###  Frontend
 
-- React 19.x with Vite  
+- React 19.x (with Vite)  
 - React Router DOM v7  
-- Axios for HTTP requests  
-- React Hook Form + Zod for form validation  
-- Tailwind CSS for styling  
-- React Hot Toast & React Toastify for notifications
+- Axios – API communication  
+- React Hook Form + Zod – form validation  
+- Tailwind CSS – utility-first styling  
+- React Hot Toast & Toastify – notifications
 
 ---
 
-## Setup & Installation
-Backend step
+##  Setup & Installation
+Backend Setup
 cd backend
 npm install
-frontend step
+cp .env.example .env   # Create your environment config
+npm run dev
+
+Frontend Setup
 cd frontend
 npm install
-## Backend
 npm run dev
-## Frontend
-npm run dev
- ## Security Features
+
+
+Security Features
 Password hashing with bcryptjs
 
-JWT authentication with access & refresh tokens
+✅ JWT-based authentication (access & refresh tokens)
 
-HTTP-only, secure, SameSite cookies for refresh tokens
+✅ HTTP-only, SameSite-secure cookies for refresh tokens
 
-Helmet for setting secure HTTP headers
+✅ Helmet for HTTP header protection
 
-Rate limiting to prevent brute force attacks
+✅ Rate limiting to prevent brute-force attacks
 
-Strict CORS allowing only frontend origin
+✅ CORS restricted to frontend origin only
 
-Backend validation with Joi
+✅ Request validation with Joi (backend)
 
-Frontend validation with Zod
-
-
+✅ Form validation with Zod (frontend)
 
 
 
-
-
-
-
-
-
-### Clone the repo
+###  Clone the Repository
 
 ```bash
 git clone https://github.com/pratibha-surya/atu_karigari.git
-cd  assig
-cd frontend
-cd backend
-
+cd atu_karigari
